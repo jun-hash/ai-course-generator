@@ -1,9 +1,9 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Lexend  } from 'next/font/google'
-import { Provider } from "@/components/Providers";
+// import { Provider } from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
-// import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar";
 
 const lexend   = Lexend ({ subsets: ['latin'] })
 
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={lexend .className}>
-        {/* <Navbar /> */}
+        <Navbar />
         {children}
         <Toaster />
       </body>
