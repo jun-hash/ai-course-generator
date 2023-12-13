@@ -1,7 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Lexend  } from 'next/font/google'
-// import { Provider } from "@/components/Providers";
+import { Provider } from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
 import Navbar from "@/components/Navbar";
 
@@ -19,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={lexend .className}>
-        <Navbar />
-        {children}
-        <Toaster />
+        <Provider>
+          <Navbar />
+          {children}
+          <Toaster />
+        </Provider>
       </body>
     </html>
   )

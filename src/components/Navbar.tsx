@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getAuthSession } from '@/lib/auth';
 import SingInButton from './SignInButton';
 import UserAccountNav from './UserAccountNav' ;
+import { ThemeToggle } from './ThemeToggle';
 
 type Props = {}
 
@@ -22,20 +23,29 @@ const Navbar = async (props: Props) => {
 
         {/* Nav sublinks */}
         <div className='flex items-center'>
-            <Link href="/gallery" className="mr-3">
-              Gallery
-            </Link>
-        </div>
-        <div className="flex items-center">
-            {session?.user ? (
-              <UserAccountNav user={session.user} />
-            ) : (
-              <SingInButton />
+              <Link href="/gallery" className="mr-3">
+                Gallery
+              </Link>
+              {session?.user && (
+              <>
+                <Link href="/create" className="mr-3">
+                  Create Course
+                </Link>
+                <Link href="/settings" className="mr-3">
+                  Settings
+                </Link>
+              </>
             )}
+          <ThemeToggle />
+          <div className="flex items-center">
+              {session?.user ? (
+                <UserAccountNav user={session.user} />
+              ) : (
+                <SingInButton />
+              )}
           </div>
+        </div>
       </div>
-
-
     </nav>
   )
 }
