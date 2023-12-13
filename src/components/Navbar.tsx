@@ -1,7 +1,8 @@
 import React from 'react'
 import Link from "next/link";
 import { getAuthSession } from '@/lib/auth';
-import SingInButton from './SingInButton';
+import SingInButton from './SignInButton';
+import UserAccountNav from './UserAccountNav' ;
 
 type Props = {}
 
@@ -25,17 +26,13 @@ const Navbar = async (props: Props) => {
               Gallery
             </Link>
         </div>
-        {session?.user && (
-          <>
-            <Link href="/create">
-              Create Course
-            </Link>
-            <Link href="/settings">
-              Settings
-            </Link>
-          </>
-        )}
-        <SingInButton />
+        <div className="flex items-center">
+            {session?.user ? (
+              <UserAccountNav user={session.user} />
+            ) : (
+              <SingInButton />
+            )}
+          </div>
       </div>
 
 
