@@ -1,3 +1,5 @@
+// /api/course/createChapters
+
 import { NextResponse } from "next/server";
 import { getAuthSession } from "@/lib/auth";
 import { createChaptersSchema } from "@/validators/course";
@@ -21,10 +23,10 @@ export async function POST(req: Request, res: Response) {
         //   }
 
         const body = await req.json()
+        console.log('body',body)
         const { title, units } = createChaptersSchema.parse(body)
+        console.log(title, units)
 
-        //outputUnits Logic -gpt function
-        // title,units => gpt =>  chapters => youtube videos
         type outputUnits = {
             title: string;
             chapters: {
@@ -94,6 +96,8 @@ export async function POST(req: Request, res: Response) {
               },
             },
         });
+        console.log(course);
+        console.log(course.id);
 
         return NextResponse.json({ course_id: course.id });
     }
@@ -102,5 +106,6 @@ export async function POST(req: Request, res: Response) {
             return new NextResponse("invalid body", { status: 400 });
         }
         console.error(error)
+        return new NextResponse("unknown", {status:500})
     }
 }
