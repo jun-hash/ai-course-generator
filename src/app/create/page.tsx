@@ -2,6 +2,7 @@ import { getAuthSession } from '@/lib/auth'
 import React from 'react'
 import { redirect } from '../../../node_modules/next/navigation'
 import { InfoIcon } from "lucide-react";
+import CreateCourseForm from './components/CreateCourseForm';
 
 type Props = {}
 
@@ -26,7 +27,7 @@ const CreatePage  = async (props: Props) => {
         </div>
       </div>
 
-      {/* CreateCourseForm */}
+      <CreateCourseForm />
     </div>
   )
 }
