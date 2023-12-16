@@ -17,37 +17,37 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
-import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useToast  } from '@/components/ui/use-toast';
 import { Separator } from "@/components/ui/separator"
 import { Plus , Trash } from "lucide-react"
+import {motion, AnimatePresence}from 'framer-motion'
+import { createChapters } from '@/api/api'
+import { useMutation } from '@tanstack/react-query';
 
 type Props = {}
-type Input = z.infer<typeof createChaptersSchema>
+type createChaptersSchema = z.infer<typeof createChaptersSchema>
 
-// title, units input form || units dynamically add/minus
+
 const CreateCourseForm = (props: Props) => {
+    // server state
+    const { mutate: addChapters , isLoading } = useMutation(
+        {mutationFn:createChapters}
+    )
+
+    // local state
     const router = useRouter();
     const { toast } = useToast();
-    const { mutate: createChapters, isLoading } = useMutation({
-        mutationFn: async ({ title, units }: Input) => {
-        const response = await axios.post("/api/course/createChapters", {
-            title,
-            units,
-        });
-        return response.data;
-        },
-    });
-    const form = useForm<Input>({
+    const form = useForm<createChaptersSchema>({
         resolver: zodResolver(createChaptersSchema),
         defaultValues: {
         title: "",
         units: ["", "", ""],
         },
     });
-      
-    function onSubmit(data: Input) {
+
+    // event handler   
+    function onSubmit(data: createChaptersSchema) {
         if (data.units.some((unit) => unit === "")) {
         toast({
             title: "Error",
@@ -56,29 +56,28 @@ const CreateCourseForm = (props: Props) => {
         });
         return;
         }
-        createChapters(data, {
-        onSuccess: ({ course_id }) => {
-            toast(
-            {
-                title: "Success",
-                description: "Course created successfully",
-            });
-            router.push(`/create/${course_id}`);
-        },
-        onError: (error) => {
-            console.error(error);
-            toast(
-            {
-                title: "Error",
-                description: "Something went wrong",
-                variant: "destructive",
-            });
-        },
+
+        addChapters(data, {
+            onSuccess: ({ course_id }) => {
+                toast(
+                {
+                    title: "Success",
+                    description: "Course created successfully",
+                });
+                router.push(`/create/${course_id}`);
+            },
+            onError: (error) => {
+                console.error(error);
+                toast(
+                {
+                    title: "Error",
+                    description: "Something went wrong",
+                    variant: "destructive",
+                });
+            },
         });
     }
-      
-    
-      
+        
     return (
         <div className="w-full">
             <Form {...form}>
@@ -95,23 +94,36 @@ const CreateCourseForm = (props: Props) => {
                     </FormItem>
                     )}
                 />
+
+                <AnimatePresence>
                 {form.watch("units").map((_, index) => {
                     return (
-                        <FormField
-                        key={index}
-                        control={form.control}
-                        name="Unit" 
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Unit  {index + 1} </FormLabel>
-                                <FormControl>
-                                <Input placeholder="Enter subtopic of the course" {...field} />
-                                </FormControl>
-                            </FormItem>
-                            )}
-                        />
+                        <motion.div key={index}
+                            initial={{opacity:0, height:0}}
+                            animate={{opacity:1, height:"auto"}}
+                            exit={{opacity:0, height:0}}
+                            transition={{
+                                opacity:{duration:0.2},
+                                height:{duration:0.2}
+                        }}>
+                            <FormField
+                                key={index}
+                                control={form.control}
+                                name={`units.${index}`} 
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Unit  {index + 1} </FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Enter subtopic of the course" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                    )}
+                            />
+                        </motion.div>
                     )
                 })}
+                </AnimatePresence>
+
                 <div className = "flex items-center justify-center mt-4">
                     <Separator className="flex-[1]" />
                     <div className='mx-4'>
