@@ -13,3 +13,10 @@ export const createChapters = async ( data: createChaptersSchema) => {
     });
     return response.data;
 }; 
+
+export const createChaptersInfo = async (id: string) => {
+  const response = await axios.post("api/chapter/getInfo", {
+    chapterId: id,
+  });
+  return response.data;
+};

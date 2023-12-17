@@ -22,7 +22,7 @@ import { useToast  } from '@/components/ui/use-toast';
 import { Separator } from "@/components/ui/separator"
 import { Plus , Trash } from "lucide-react"
 import {motion, AnimatePresence}from 'framer-motion'
-import { createChapters } from '@/api/api'
+import { createChapters } from '@/lib/api/api'
 import { useMutation } from '@tanstack/react-query';
 
 type Props = {}

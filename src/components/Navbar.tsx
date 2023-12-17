@@ -17,7 +17,7 @@ const Navbar = async (props: Props) => {
         {/* Nav Title */}
         <Link href="/gallery" className="items-center hidden gap-2 sm:flex">
           <p className ="rounded-lg border-2 border-b-4 border-black px-2 py-1 text-xl font-bold transition-all hover:-translate-y-[2px] md:block dark:border-white">
-            Learning Journey YT
+            Learning Journey AI
           </p>
         </Link>
 

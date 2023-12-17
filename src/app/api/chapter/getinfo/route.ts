@@ -14,9 +14,6 @@ const bodyParser = z.object({
   chapterId: z.string()
 })
 
-// flow chart
-
-// 1. find chapter (id) -> 2. chatpter.query -> get video(search and get => videoid)
 export async function POST (req:Request, res:Response) {
   try {
     const body = await req.json()
