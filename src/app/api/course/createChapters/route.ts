@@ -12,6 +12,7 @@ export async function POST(req: Request, res: Response) {
     try {
         const body = await req.json();
         const { title, units } = createChaptersSchema.parse(body)
+        
         type outputUnits = {
             title: String;
             chapters: {
@@ -19,6 +20,7 @@ export async function POST(req: Request, res: Response) {
                 chapter_title: string;
             }[];
         }[];
+
         let output_units: outputUnits = await strict_output(
             "You are an AI capable of curating course content, coming up with relevant chapter titles, and finding relevant youtube videos for each chapter",
             new Array(units.length).fill(
